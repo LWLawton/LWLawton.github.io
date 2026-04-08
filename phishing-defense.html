@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Awareness & Phishing Defense | Compliance Training</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0a2351;--blue:#1a6fc4;--white:#fff;
+  --light:#f4f7fb;--border:#dde6f5;--success:#1a8a4a;
+  --danger:#cc2200;--warn:#d97706;--text:#1a2a4a;--muted:#6b7a99;
+}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--light);color:var(--text);min-height:100vh;overflow-x:hidden}
+.screen{display:none;min-height:100vh;flex-direction:column;animation:fadeIn .4s ease}
+.screen.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.hdr{background:var(--navy);color:var(--white);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.hdr-logo{font-size:13px;font-weight:700;letter-spacing:.5px;opacity:.7}
+.hdr-title{font-size:14px;font-weight:600}
+.hdr-prog{font-size:12px;opacity:.6}
+.prog-wrap{height:4px;background:rgba(255,255,255,.15)}
+.prog-fill{height:4px;background:var(--blue);transition:width .5s ease}
+.slide-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:40px 48px;max-width:960px;margin:0 auto;width:100%}
+.slide-body.wide{max-width:1100px}
+h1{font-size:32px;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:12px}
+h2{font-size:24px;font-weight:700;color:var(--navy);margin-bottom:16px}
+h3{font-size:18px;font-weight:600;color:var(--blue);margin-bottom:10px}
+p{font-size:15px;line-height:1.7;color:var(--text);margin-bottom:12px}
+ul{padding-left:20px;margin-bottom:14px}
+li{font-size:14px;line-height:1.8;color:var(--text)}
+li strong{color:var(--navy)}
+.pattern-hero{background:var(--navy);position:relative;overflow:hidden;padding:60px 48px;color:var(--white);flex-shrink:0}
+.pattern-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:320px;height:320px;border-radius:50%;border:2px solid rgba(255,255,255,.08);pointer-events:none}
+.pattern-hero::after{content:'';position:absolute;top:20px;right:40px;width:180px;height:180px;border-radius:50%;border:2px solid rgba(255,255,255,.05);pointer-events:none}
+.hero-tag{display:inline-block;background:rgba(26,111,196,.4);color:#7ab8f5;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px}
+.pattern-hero h1{color:var(--white);font-size:36px}
+.pattern-hero p{color:rgba(255,255,255,.75);font-size:16px;max-width:580px}
+.geo-accent{position:absolute;bottom:0;left:0;right:0;height:60px;background:var(--light);clip-path:polygon(0 100%,100% 100%,100% 0)}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:20px 0}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--blue)}
+.card.danger::before{background:var(--danger)}
+.card.warn::before{background:var(--warn)}
+.card.success::before{background:var(--success)}
+.card-icon{font-size:28px;margin-bottom:10px}
+.card h3{font-size:15px;margin-bottom:6px}
+.card p{font-size:13px;color:var(--muted);margin:0}
+.callout{border-radius:10px;padding:16px 20px;margin:16px 0;display:flex;gap:14px;align-items:flex-start}
+.callout.info{background:#e8f0fb;border-left:4px solid var(--blue)}
+.callout.warn{background:#fff8e6;border-left:4px solid var(--warn)}
+.callout.danger{background:#fef2f2;border-left:4px solid var(--danger)}
+.callout.success{background:#e8f6ed;border-left:4px solid var(--success)}
+.callout-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.callout p{margin:0;font-size:14px;line-height:1.6}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;margin:20px 0}
+/* ── NAV — counter injected dynamically, no hardcoded text ── */
+.nav-row{display:flex;justify-content:space-between;align-items:center;padding:20px 48px;background:var(--white);border-top:1px solid var(--border);flex-shrink:0}
+.btn{padding:11px 28px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:var(--navy);color:var(--white)}
+.btn-primary:hover{background:var(--blue)}
+.btn-primary:disabled{background:#8a9ab5;cursor:not-allowed}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--light)}
+.btn-success{background:var(--success);color:var(--white)}
+.screen-counter{font-size:12px;color:var(--muted)}
+.quiz-wrap{background:var(--white);border-radius:14px;border:1px solid var(--border);padding:28px;margin:10px 0}
+.quiz-question{font-size:16px;font-weight:600;color:var(--navy);margin-bottom:20px;line-height:1.5}
+.quiz-options{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.quiz-opt{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1.5px solid var(--border);border-radius:9px;cursor:pointer;transition:all .2s;background:var(--white)}
+.quiz-opt:hover{border-color:var(--blue);background:#f0f4ff}
+.quiz-opt.selected{border-color:var(--blue);background:#e8f0fb}
+.quiz-opt.correct{border-color:var(--success);background:#e8f6ed}
+.quiz-opt.incorrect{border-color:var(--danger);background:#fef2f2}
+.quiz-opt input{accent-color:var(--blue);width:16px;height:16px;flex-shrink:0;margin-top:2px}
+.quiz-opt label{font-size:14px;line-height:1.5;cursor:pointer}
+.quiz-feedback{border-radius:8px;padding:12px 16px;font-size:14px;font-weight:600;margin-top:4px;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.pass{background:#e8f6ed;color:#0d5c2e}
+.quiz-feedback.fail{background:#fef2f2;color:#8b1a1a}
+.quiz-score-bar{height:8px;background:var(--border);border-radius:4px;margin:16px 0 6px;overflow:hidden}
+.quiz-score-fill{height:8px;background:var(--success);border-radius:4px;transition:width .5s}
+.quiz-score-label{font-size:12px;color:var(--muted);text-align:right}
+.cert-wrap{background:var(--white);border:3px solid var(--navy);border-radius:16px;padding:40px;max-width:700px;margin:0 auto;text-align:center;position:relative;overflow:hidden}
+.cert-wrap::before{content:'';position:absolute;top:10px;left:10px;right:10px;bottom:10px;border:1px solid var(--border);border-radius:12px;pointer-events:none}
+.cert-logo{font-size:13px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.cert-title{font-size:28px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.cert-sub{font-size:14px;color:var(--muted);margin-bottom:24px}
+.cert-name-input{width:100%;max-width:400px;border:none;border-bottom:2px solid var(--navy);text-align:center;font-size:22px;font-weight:700;color:var(--navy);padding:8px;background:transparent;outline:none;margin-bottom:6px}
+.cert-name-input::placeholder{color:var(--border);font-weight:400;font-size:18px}
+.cert-label{font-size:11px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:20px}
+.cert-module{background:var(--navy);color:var(--white);border-radius:8px;padding:10px 20px;display:inline-block;font-size:15px;font-weight:700;margin-bottom:20px}
+.cert-date{font-size:13px;color:var(--muted);margin-bottom:8px}
+.cert-sig-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px;text-align:left}
+.cert-sig-line{border-bottom:1.5px solid var(--text);padding-bottom:4px;margin-bottom:4px;min-height:32px}
+.cert-sig-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+@media print{
+  body{background:#fff}
+  .hdr,.prog-wrap,.nav-row,.screen:not(.active){display:none!important}
+  .screen.active{display:block!important;min-height:auto}
+  .slide-body{padding:20px}
+  .cert-wrap{border:3px solid #0a2351;box-shadow:none;page-break-inside:avoid}
+  .no-print{display:none!important}
+  .print-only{display:block!important}
+  @page{margin:1in;size:letter}
+}
+.print-only{display:none}
+.svg-wrap{display:flex;justify-content:center;align-items:center;padding:10px 0}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.badge-blue{background:#e8f0fb;color:var(--blue)}
+.checklist{list-style:none;padding:0;margin:12px 0}
+.checklist li{padding:8px 0 8px 28px;position:relative;font-size:14px;border-bottom:1px solid var(--border)}
+.checklist li:last-child{border-bottom:none}
+.checklist li::before{content:'✓';position:absolute;left:0;color:var(--success);font-weight:700}
+.checklist li.bad::before{content:'✗';color:var(--danger)}
+</style>
+</head>
+<body>
+
+<!-- SECTION: CHROME — header and progress bar, counters set dynamically by go() -->
+<div id="chrome-hdr" class="hdr">
+  <span class="hdr-logo">Dental vCISO &nbsp;|&nbsp; Compliance Training</span>
+  <span class="hdr-title">Security Awareness &amp; Phishing Defense</span>
+  <span class="hdr-prog" id="hdr-prog">Screen 1 of 19</span>
+</div>
+<div class="prog-wrap"><div class="prog-fill" id="prog-fill" style="width:5%"></div></div>
+
+<!-- ── SCREEN 1 — HERO ── -->
+<div class="screen active" id="s1">
+  <div class="pattern-hero">
+    <div class="hero-tag">Compliance Training &nbsp;·&nbsp; Module 1</div>
+    <h1>Security Awareness<br>&amp; Phishing Defense</h1>
+    <p>Every cyber attack on a dental practice starts the same way — with someone clicking something they shouldn't. This module teaches you to recognize, resist, and report phishing attempts.</p>
+    <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+      <span class="badge badge-blue">~25 Minutes</span>
+      <span class="badge" style="background:rgba(255,255,255,.12);color:#fff">19 Screens</span>
+      <span class="badge" style="background:rgba(255,255,255,.12);color:#fff">5 Quiz Questions</span>
+      <span class="badge" style="background:rgba(255,255,255,.12);color:#fff">100% Pass Required</span>
+    </div>
+    <div class="geo-accent"></div>
+  </div>
+  <div class="slide-body">
+    <div class="two-col">
+      <div>
+        <h2>What you will learn</h2>
+        <ul class="checklist">
+          <li>What phishing is and why dental practices are targeted</li>
+          <li>How to identify suspicious emails, links, and attachments</li>
+          <li>Social engineering tactics attackers use</li>
+          <li>What to do if you receive or click a phishing email</li>
+          <li>Malicious software — how to prevent, detect, and report it</li>
+          <li>Login monitoring and password management requirements</li>
+          <li>HIPAA implications of a phishing-caused breach</li>
+        </ul>
+      </div>
+      <div class="svg-wrap">
+        <!-- SVG: Humorous fisherman silhouette with red NO circle/line -->
+        <svg width="210" height="230" viewBox="0 0 210 230" xmlns="http://www.w3.org/2000/svg">
+          <line x1="10" y1="195" x2="200" y2="195" stroke="#0a2351" stroke-width="2"/>
+          <ellipse cx="90" cy="185" rx="22" ry="10" fill="#0a2351"/>
+          <rect x="78" y="165" width="10" height="28" rx="4" fill="#0a2351"/>
+          <rect x="92" y="165" width="10" height="28" rx="4" fill="#0a2351" transform="rotate(8,97,165)"/>
+          <rect x="72" y="125" width="34" height="42" rx="8" fill="#0a2351"/>
+          <circle cx="89" cy="115" r="16" fill="#0a2351"/>
+          <rect x="72" y="105" width="34" height="6" rx="3" fill="#0a2351"/>
+          <rect x="78" y="92" width="22" height="14" rx="4" fill="#0a2351"/>
+          <line x1="72" y1="138" x2="48" y2="128" stroke="#0a2351" stroke-width="8" stroke-linecap="round"/>
+          <line x1="106" y1="138" x2="126" y2="148" stroke="#0a2351" stroke-width="8" stroke-linecap="round"/>
+          <line x1="48" y1="128" x2="170" y2="60" stroke="#0a2351" stroke-width="3" stroke-linecap="round"/>
+          <line x1="170" y1="60" x2="178" y2="110" stroke="#0a2351" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <path d="M178,110 Q188,118 182,128 Q176,136 170,130" stroke="#d97706" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <circle cx="170" cy="130" r="3" fill="#d97706"/>
+          <rect x="156" y="128" width="20" height="14" rx="2" fill="#fff" stroke="#d97706" stroke-width="1.5"/>
+          <polyline points="156,128 166,136 176,128" fill="none" stroke="#d97706" stroke-width="1"/>
+          <circle cx="105" cy="115" r="90" fill="rgba(204,34,0,0.08)" stroke="#cc2200" stroke-width="7"/>
+          <line x1="41" y1="51" x2="169" y2="179" stroke="#cc2200" stroke-width="7" stroke-linecap="round"/>
+          <text x="105" y="222" text-anchor="middle" font-size="11" fill="#6b7a99" font-style="italic">Don't take the bait.</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <span></span>
+    <span class="screen-counter" id="sc-1"></span>
+    <button class="btn btn-primary" onclick="go(2)">Let's Begin &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 2 — WHY DENTAL PRACTICES ARE TARGETED ── -->
+<div class="screen" id="s2">
+  <div class="slide-body">
+    <h2>Why Dental Practices Are a Prime Target</h2>
+    <p>Hackers don't just go after hospitals. Small dental offices are increasingly targeted because they hold valuable data with fewer defenses.</p>
+    <div class="card-grid">
+      <div class="card danger"><div class="card-icon">🦷</div><h3>Rich Patient Data</h3><p>Full name, DOB, SSN, insurance, payment info — a complete identity theft package per patient.</p></div>
+      <div class="card warn"><div class="card-icon">💻</div><h3>Limited IT Resources</h3><p>Most practices have no dedicated IT security staff — making them softer targets than hospitals.</p></div>
+      <div class="card danger"><div class="card-icon">💰</div><h3>Ransomware Payouts</h3><p>Attackers know practices can't afford downtime. Average dental ransomware demand: $50,000–$250,000.</p></div>
+      <div class="card warn"><div class="card-icon">📋</div><h3>HIPAA Liability</h3><p>A single breach can trigger OCR investigations, fines up to $1.9M, and mandatory patient notifications.</p></div>
+    </div>
+    <div class="callout info">
+      <span class="callout-icon">📊</span>
+      <p><strong>Stat:</strong> Over 90% of successful cyberattacks begin with a phishing email. Your inbox is the front door to your practice's data.</p>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="go(1)">&larr; Back</button>
+    <span class="screen-counter" id="sc-2"></span>
+    <button class="btn btn-primary" onclick="go(3)">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 3 — WHAT IS PHISHING ── -->
+<div class="screen" id="s3">
+  <div class="slide-body">
+    <div class="two-col">
+      <div>
+        <h2>What Is Phishing?</h2>
+        <p>Phishing is a cyberattack where criminals impersonate a trusted source — your bank, your software vendor, even your insurance company — to trick you into revealing credentials, clicking malicious links, or opening infected attachments.</p>
+        <h3 style="margin-top:20px">The three goals of every phishing attack:</h3>
+        <ul>
+          <li><strong>Steal credentials</strong> — your username and password</li>
+          <li><strong>Install malware</strong> — ransomware, keyloggers, spyware</li>
+          <li><strong>Trigger a wire transfer</strong> — business email compromise (BEC)</li>
+        </ul>
+        <div class="callout warn" style="margin-top:16px">
+          <span class="callout-icon">⚠️</span>
+          <p>Phishing emails are <strong>no longer full of typos and broken English</strong>. Modern attacks are polished, personalized, and convincing.</p>
+        </div>
+      </div>
+      <div class="svg-wrap">
+        <svg width="190" height="240" viewBox="0 0 190 240" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="95" cy="45" r="22" fill="#e8f0fb" stroke="#0a2351" stroke-width="2"/>
+          <text x="95" y="51" text-anchor="middle" font-size="18">😰</text>
+          <line x1="95" y1="67" x2="95" y2="130" stroke="#0a2351" stroke-width="3"/>
+          <line x1="95" y1="90" x2="60" y2="110" stroke="#0a2351" stroke-width="2.5"/>
+          <line x1="95" y1="90" x2="130" y2="110" stroke="#0a2351" stroke-width="2.5"/>
+          <line x1="95" y1="130" x2="75" y2="175" stroke="#0a2351" stroke-width="2.5"/>
+          <line x1="95" y1="130" x2="115" y2="175" stroke="#0a2351" stroke-width="2.5"/>
+          <rect x="30" y="185" width="130" height="45" rx="6" fill="#fff" stroke="#0a2351" stroke-width="1.5"/>
+          <polyline points="30,185 95,215 160,185" fill="none" stroke="#0a2351" stroke-width="1.5"/>
+          <text x="95" y="205" text-anchor="middle" font-size="10" fill="#cc2200" font-weight="bold">FROM: dentrix-support@dentrrix.com</text>
+          <path d="M130 110 Q155 150 160 185" stroke="#d97706" stroke-width="2" fill="none" stroke-dasharray="4,3"/>
+          <circle cx="130" cy="110" r="4" fill="#d97706"/>
+          <text x="95" y="233" text-anchor="middle" font-size="10" fill="#cc2200">Spot the typo: "dentrrix"</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="go(2)">&larr; Back</button>
+    <span class="screen-counter" id="sc-3"></span>
+    <button class="btn btn-primary" onclick="go(4)">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 4 — TYPES OF PHISHING ── -->
+<div class="screen" id="s4">
+  <div class="slide-body">
+    <h2>Types of Phishing Attacks</h2>
+    <p>Not all phishing looks the same. Here are the variants your team needs to recognize:</p>
+    <div class="card-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+      <div class="card"><div class="card-icon">📧</div><h3>Email Phishing</h3><p>Mass emails impersonating known brands — insurance companies, Dentrix, Microsoft 365, your bank.</p></div>
+      <div class="card warn"><div class="card-icon">🎯</div><h3>Spear Phishing</h3><p>Targeted attack using your name, role, and practice details. Harder to spot. More dangerous.</p></div>
+      <div class="card danger"><div class="card-icon">👑</div><h3>Whaling</h3><p>Targets the dentist/owner specifically. Often impersonates the IRS, DEA, insurance auditors, or attorneys.</p></div>
+      <div class="card"><div class="card-icon">📱</div><h3>Smishing</h3><p>Phishing via SMS. "Your Dentrix account is locked. Click here." — sent to your personal phone.</p></div>
+      <div class="card"><div class="card-icon">📞</div><h3>Vishing</h3><p>Phone call phishing. Attacker poses as IT support, insurance rep, or software vendor needing "remote access."</p></div>
+      <div class="card warn"><div class="card-icon">🔗</div><h3>Business Email Compromise</h3><p>Attacker spoofs the dentist's email to instruct staff to wire money or change payroll banking details.</p></div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="go(3)">&larr; Back</button>
+    <span class="screen-counter" id="sc-4"></span>
+    <button class="btn btn-primary" onclick="go(5)">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 5 — RED FLAGS ── -->
+<div class="screen" id="s5">
+  <div class="slide-body wide">
+    <h2>Red Flags: How to Spot a Phishing Email</h2>
+    <div class="two-col">
+      <div>
+        <h3>Check Every Time</h3>
+        <ul class="checklist">
+          <li>Sender email domain doesn't match the company (e.g., <em>@dentrrix.com</em> vs <em>@dentrix.com</em>)</li>
+          <li>Urgent language: "Act immediately," "Your account will be suspended"</li>
+          <li>Unexpected attachment — especially .zip, .exe, .docm files</li>
+          <li>Generic greeting: "Dear Valued Customer" instead of your name</li>
+          <li>Link URL doesn't match displayed text — hover before clicking</li>
+          <li>Request for credentials, payment, or remote access via email</li>
+          <li>Too-good-to-be-true offers or unexpected prize notifications</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Real Dental Practice Examples</h3>
+        <div class="callout danger">
+          <span class="callout-icon">🚨</span>
+          <p><strong>"Your Dentrix subscription has expired. Login to restore access."</strong><br>Link goes to dentrix-renewal-portal.com — NOT dentrix.com</p>
+        </div>
+        <div class="callout danger">
+          <span class="callout-icon">🚨</span>
+          <p><strong>"Delta Dental requires updated W-9 documentation. See attached."</strong><br>Attachment installs ransomware on open.</p>
+        </div>
+        <div class="callout warn">
+          <span class="callout-icon">⚠️</span>
+          <p><strong>"Hi [your name], it's Dr. Smith. Please wire $4,200 to this account today. I'm in a meeting."</strong><br>The "From" name matches — the email address doesn't.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="go(4)">&larr; Back</button>
+    <span class="screen-counter" id="sc-5"></span>
+    <button class="btn btn-primary" onclick="go(6)">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 6 — QUIZ 1 ── -->
+<div class="screen" id="s6">
+  <div class="slide-body">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <span class="badge badge-blue">Knowledge Check 1 of 5</span>
+    </div>
+    <div id="quiz-1"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="go(5)">&larr; Back</button>
+    <span class="screen-counter" id="sc-6"></span>
+    <button class="btn btn-primary" id="next-q1" onclick="go(7)" disabled>Next &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 7 — SOCIAL ENGINEERING ── -->
+<div class="screen" id="s7">
+  <div class="slide-body">
+    <h2>Social Engineering: The Human Hack</h2>
+    <p>Attackers don't just send emails. They manipulate human psychology to bypass your defenses. This is called <strong>social engineering</strong>.</p>
+    <div class="card-grid">
+      <div class="card warn"><div class="card-icon">⏰</div><h3>Urgency &amp; Fear</h3><p>"Your account is suspended." Creates panic so you act before thinking.</p></div>
+      <div class="card warn"><div class="card-icon">🤝</div><h3>Authority</h3><p>Impersonating the dentist, the IT team, Delta Dental, OCR, or the IRS. People comply with authority figures.</p></div>
+      <div class="card warn"><div class="card-icon">🎁</div><h3>Reciprocity</h3><p>"We've credited your account. Click here to claim it." Creates a sense of obligation to act.</p></div>
+      <div class="card warn"><div class="card-icon">👥</div><h3>Social Proof</h3><p>"Your colleagues have already updated their credentials." Implies others have complied — so should you.</p></div>
+    </div>
+    <div class="callout info">
+      <span class="callout-icon">💡</span>
+      <p><strong>The Golden Rule:</strong> Any unexpected request for credentials, money, or remote access — regardless of how official it looks — should be verified via a separate, known phone number before acting.</p>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="go(6)">&larr; Back</button>
+    <span class="screen-counter" id="sc-7"></span>
+    <button class="btn btn-primary" onclick="go(8)">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 8 — QUIZ 2 ── -->
+<div class="screen" id="s8">
+  <div class="slide-body">
+    <span class="badge badge-blue">Knowledge Check 2 of 5</span>
+    <div id="quiz-2" style="margin-top:12px"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="go(7)">&larr; Back</button>
+    <span class="screen-counter" id="sc-8"></span>
+    <button class="btn btn-primary" id="next-q2" onclick="go(9)" disabled>Next &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 9 — WHAT TO DO ── -->
+<div class="screen" id="s9">
+  <div class="slide-body">
+    <div class="two-col">
+      <div>
+        <h2>You Received a Suspicious Email. Now What?</h2>
+        <h3>DO these things:</h3>
+        <ul class="checklist">
+          <li>Do NOT click any links or open attachments</li>
+          <li>Do NOT reply to the sender</li>
+          <li>Report it using your email client's "Report Phishing" button</li>
+          <li>Forward it to your IT contact or security team</li>
+          <li>Delete it after reporting</li>
+          <li>Warn your colleagues if it appears targeted</li>
+        </ul>
+        <h3 style="margin-top:16px;color:var(--danger)">DO NOT do these things:</h3>
+        <ul class="checklist">
+          <li class="bad">Click "Unsubscribe" — confirms your email is active</li>
+          <li class="bad">Forward it to friends or family to warn them</li>
+          <li class="bad">Open it on your phone "just to check"</li>
+          <li class="bad">Call the number provided IN the email</li>
+        </ul>
+      </div>
+      <div class="svg-wrap">
+        <!-- SVG: True 8-point octagon + green street sign, fully visible -->
+        <svg width="200" height="320" viewBox="0 0 200 320" xmlns="http://www.w3.org/2000/svg">
+          <!-- True octagon — 8 equal sides, flat top & bottom, centred at 100,105 r=88 -->
+          <polygon points="133,23 167,57 167,153 133,187 67,187 33,153 33,57 67,23"
+            fill="#cc2200" stroke="#8b1a1a" stroke-width="3.5"/>
+          <!-- Inner white ring -->
+          <polygon points="130,33 161,64 161,146 130,177 70,177 39,146 39,64 70,33"
+            fill="none" stroke="white" stroke-width="2" opacity="0.35"/>
+          <text x="100" y="98" text-anchor="middle" font-size="22" font-weight="800" fill="white" letter-spacing="1.5">DON'T</text>
+          <text x="100" y="126" text-anchor="middle" font-size="22" font-weight="800" fill="white" letter-spacing="1.5">CLICK</text>
+          <text x="100" y="166" text-anchor="middle" font-size="24">🚫</text>
+          <!-- Arrow down -->
+          <line x1="100" y1="191" x2="100" y2="218" stroke="#1a2a4a" stroke-width="3"/>
+          <polygon points="100,230 91,216 109,216" fill="#1a2a4a"/>
+          <!-- Green street sign — tall enough for 2 lines + padding -->
+          <rect x="18" y="230" width="164" height="62" rx="6" fill="#1a8a4a" stroke="#0d5c2e" stroke-width="2.5"/>
+          <!-- Sign post -->
+          <rect x="94" y="292" width="12" height="22" rx="2" fill="#888"/>
+          <text x="100" y="253" text-anchor="middle" font-size="15" font-weight="800" fill="white" letter-spacing="2">REPORT</text>
+          <text x="100" y="274" text-anchor="middle" font-size="15" font-weight="800" fill="white" letter-spacing="2">PHISHING</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="go(8)">&larr; Back</button>
+    <span class="screen-counter" id="sc-9"></span>
+    <button class="btn btn-primary" onclick="go(10)">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 10 — IF YOU CLICKED ── -->
+<div class="screen" id="s10">
+  <div class="slide-body">
+    <h2>You Clicked a Phishing Link. Here's What to Do.</h2>
+    <div class="callout danger">
+      <span class="callout-icon">🚨</span>
+      <p><strong>Do not panic — but act immediately.</strong> The next 30 minutes matter. Speed limits the damage.</p>
+    </div>
+    <div class="card-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-top:16px">
+      <div class="card" style="border-top-color:var(--navy)"><div class="card-icon">1️⃣</div><h3>Disconnect</h3><p>Unplug from Wi-Fi and ethernet immediately. Isolate the device from the network.</p></div>
+      <div class="card warn"><div class="card-icon">2️⃣</div><h3>Don't Power Off</h3><p>Leave the device on. Forensic evidence lives in memory. Powering off destroys it.</p></div>
+      <div class="card danger"><div class="card-icon">3️⃣</div><h3>Report Now</h3><p>Call your IT contact or security team immediately. Do not wait. Do not be embarrassed.</p></div>
+      <div class="card success"><div class="card-icon">4️⃣</div><h3>Change Passwords</h3><p>From a different, clean device — change your email password and any shared credentials immediately.</p></div>
+      <div class="card" style="border-top-color:var(--navy)"><div class="card-icon">5️⃣</div><h3>Document Everything</h3><p>Screenshot the email, note the time, record what you clicked. This is your incident report.</p></div>
+      <div class="card success"><div class="card-icon">6️⃣</div><h3>Enable MFA</h3><p>If MFA wasn't on — enable it now on all accounts from a clean device.</p></div>
+    </div>
+    <div class="callout info" style="margin-top:16px">
+      <span class="callout-icon">⚖️</span>
+      <p><strong>HIPAA Note:</strong> If patient data may have been exposed, this is a potential reportable breach. Your IT/Security team will assess — but do not delay reporting internally.</p>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="go(9)">&larr; Back</button>
+    <span class="screen-counter" id="sc-10"></span>
+    <button class="btn btn-primary" onclick="go(11)">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 11 — QUIZ 3 ── -->
+<div class="screen" id="s11">
+  <div class="slide-body">
+    <span class="badge badge-blue">Knowledge Check 3 of 5</span>
+    <div id="quiz-3" style="margin-top:12px"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="go(10)">&larr; Back</button>
+    <span class="screen-counter" id="sc-11"></span>
+    <button class="btn btn-primary" id="next-q3" onclick="go(12)" disabled>Next &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 12 — HIPAA & PHISHING ── -->
+<div class="screen" id="s12">
+  <div class="slide-body">
+    <h2>HIPAA &amp; Phishing: The Legal Stakes</h2>
+    <p>A phishing attack that exposes patient data isn't just an IT problem — it's a federal compliance violation with real financial and legal consequences.</p>
+    <div class="two-col">
+      <div>
+        <h3>What HIPAA Requires</h3>
+        <ul class="checklist">
+          <li>Annual security awareness training for ALL staff</li>
+          <li>Documented phishing and incident response policies</li>
+          <li>Risk analysis that includes phishing as a threat vector</li>
+          <li>Breach notification to patients within 60 days if PHI is exposed</li>
+          <li>HHS/OCR notification for breaches affecting 500+ patients</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Breach Penalty Tiers</h3>
+        <div class="callout success"><span class="callout-icon">✅</span><p><strong>Unknowing ($100–$50K/violation):</strong> You didn't know and couldn't have known — if you had proper training.</p></div>
+        <div class="callout warn"><span class="callout-icon">⚠️</span><p><strong>Reasonable Cause ($1K–$50K):</strong> Should have known with reasonable diligence.</p></div>
+        <div class="callout danger"><span class="callout-icon">🚨</span><p><strong>Willful Neglect ($10K–$1.9M):</strong> No training, no policies, no response. This module protects you here.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="go(11)">&larr; Back</button>
+    <span class="screen-counter" id="sc-12"></span>
+    <button class="btn btn-primary" onclick="go(13)">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 13 — QUIZ 4 ── -->
+<div class="screen" id="s13">
+  <div class="slide-body">
+    <span class="badge badge-blue">Knowledge Check 4 of 5</span>
+    <div id="quiz-4" style="margin-top:12px"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="go(12)">&larr; Back</button>
+    <span class="screen-counter" id="sc-13"></span>
+    <button class="btn btn-primary" id="next-q4" onclick="go(14)" disabled>Next &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 14 — BEST PRACTICES ── -->
+<div class="screen" id="s14">
+  <div class="slide-body">
+    <h2>Your Personal Phishing Defense Checklist</h2>
+    <div class="two-col">
+      <div>
+        <h3>Email Habits</h3>
+        <ul class="checklist">
+          <li>Hover over links before clicking — check the real URL</li>
+          <li>Never open unexpected attachments without confirming via phone</li>
+          <li>Verify financial requests by calling back on a known number</li>
+          <li>Use your work email only for work — not personal subscriptions</li>
+          <li>Enable email banner warnings for external senders</li>
+        </ul>
+        <h3 style="margin-top:20px">Account Security</h3>
+        <ul class="checklist">
+          <li>Enable MFA on every account — especially email and your PMS</li>
+          <li>Use a unique password for every system (use a password manager)</li>
+          <li>Never use your work password for personal accounts</li>
+        </ul>
+      </div>
+      <div>
+        <div class="callout info"><span class="callout-icon">📞</span><p><strong>Call — don't click.</strong> If you receive an email from any vendor asking you to act — call them directly using the number on their official website. Never use the number in the email.</p></div>
+        <div class="callout success" style="margin-top:12px"><span class="callout-icon">🏆</span><p><strong>Report early, report often.</strong> You are never in trouble for reporting a suspicious email. You may only be in trouble if you don't report a real one.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="go(13)">&larr; Back</button>
+    <span class="screen-counter" id="sc-14"></span>
+    <button class="btn btn-primary" onclick="go(15)">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 15 — MALICIOUS SOFTWARE (164.308(a)(5)(B)) ── -->
+<div class="screen" id="s15">
+  <div class="slide-body">
+    <div style="margin-bottom:6px"><span class="badge badge-blue">45 CFR 164.308(a)(5)(B) — Required Coverage</span></div>
+    <h2>Protection from Malicious Software</h2>
+    <p>HIPAA requires that all workforce members understand how malware enters a practice and how to prevent, detect, and report it.</p>
+    <div class="two-col">
+      <div>
+        <h3>How Malware Reaches Your Practice</h3>
+        <ul class="checklist">
+          <li>Phishing email attachments (.zip, .exe, .docm, .pdf with macros)</li>
+          <li>Malicious links in emails or on websites</li>
+          <li>Infected USB drives plugged into workstations</li>
+          <li>Unauthorized software downloaded by staff</li>
+          <li>Unpatched software with known vulnerabilities</li>
+          <li>Remote access tools installed by fake "IT support" callers</li>
+        </ul>
+        <h3 style="margin-top:16px">Your Responsibilities</h3>
+        <ul class="checklist">
+          <li>Never install software not approved by your IT team</li>
+          <li>Never plug personal USB drives into work computers</li>
+          <li>Allow all system updates and patches to complete promptly</li>
+          <li>Never disable antivirus or security warnings</li>
+          <li>Report any unusual computer behavior immediately</li>
+        </ul>
+      </div>
+      <div>
+        <div class="callout danger"><span class="callout-icon">🚨</span><p><strong>Report immediately if you notice:</strong> Computer running unusually slow, files renamed or inaccessible, pop-ups demanding payment, programs opening on their own, or a ransom message on screen.</p></div>
+        <div class="callout warn" style="margin-top:12px"><span class="callout-icon">⚠️</span><p><strong>Ransomware is the #1 threat to dental practices.</strong> It encrypts ALL patient records and demands payment — often $50K–$250K — to restore access. It almost always starts with a phishing click.</p></div>
+        <div class="callout success" style="margin-top:12px"><span class="callout-icon">✅</span><p><strong>If in doubt — disconnect and call IT.</strong> A false alarm is always better than an undetected infection spreading across your network.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="go(14)">&larr; Back</button>
+    <span class="screen-counter" id="sc-15"></span>
+    <button class="btn btn-primary" onclick="go(16)">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 16 — LOGIN MONITORING & PASSWORDS (164.308(a)(5)(C)(D)) ── -->
+<div class="screen" id="s16">
+  <div class="slide-body">
+    <div style="margin-bottom:6px"><span class="badge badge-blue">45 CFR 164.308(a)(5)(C)(D) — Required Coverage</span></div>
+    <h2>Login Monitoring &amp; Password Management</h2>
+    <p>Stolen credentials are the most common result of a successful phishing attack. Strong password habits and login vigilance are your last line of defense.</p>
+    <div class="two-col">
+      <div>
+        <h3>Password Requirements</h3>
+        <ul class="checklist">
+          <li>Use a unique password for every system — never reuse passwords</li>
+          <li>Minimum 12 characters — mix upper, lower, numbers, symbols</li>
+          <li>Never share passwords with colleagues, even temporarily</li>
+          <li>Never write passwords on sticky notes near your workstation</li>
+          <li>Use a practice-approved password manager</li>
+          <li>Change passwords immediately if you suspect compromise</li>
+        </ul>
+        <h3 style="margin-top:16px">Multi-Factor Authentication (MFA)</h3>
+        <ul class="checklist">
+          <li>Enable MFA on all systems that support it — especially email and your PMS</li>
+          <li>MFA means a stolen password alone cannot grant access</li>
+          <li>Never approve an MFA prompt you didn't initiate — report it immediately</li>
+        </ul>
+      </div>
+      <div>
+        <div class="callout info"><span class="callout-icon">🔍</span><p><strong>HIPAA requires login monitoring.</strong> Your IT team reviews login logs — but you play a role too. Report anything unusual about your account access.</p></div>
+        <div class="callout warn" style="margin-top:12px"><span class="callout-icon">⚠️</span><p><strong>Report these login anomalies:</strong> Locked out unexpectedly, password reset emails you didn't request, login notifications from unfamiliar locations, or colleagues receiving messages from "you" that you didn't send.</p></div>
+        <div class="callout danger" style="margin-top:12px"><span class="callout-icon">🚨</span><p><strong>Session security:</strong> Always lock your workstation when stepping away (Win+L / Cmd+Ctrl+Q). Never leave a logged-in session unattended — especially in patient areas.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="go(15)">&larr; Back</button>
+    <span class="screen-counter" id="sc-16"></span>
+    <button class="btn btn-primary" onclick="go(17)">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 17 — QUIZ 5 (FINAL) ── -->
+<div class="screen" id="s17">
+  <div class="slide-body">
+    <span class="badge badge-blue">Knowledge Check 5 of 5 — Final</span>
+    <div id="quiz-5" style="margin-top:12px"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="go(16)">&larr; Back</button>
+    <span class="screen-counter" id="sc-17"></span>
+    <button class="btn btn-primary" id="next-q5" onclick="go(18)" disabled>Next &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 18 — RESOURCES & SUMMARY ── -->
+<div class="screen" id="s18">
+  <div class="slide-body">
+    <h2>Summary &amp; Resources</h2>
+    <div class="two-col">
+      <div>
+        <h3>Key Takeaways</h3>
+        <ul class="checklist">
+          <li>90%+ of breaches start with phishing — your inbox is the attack surface</li>
+          <li>Modern phishing is polished and personalized — skepticism is a skill</li>
+          <li>Always verify unexpected requests via a known, separate channel</li>
+          <li>Report suspicious emails — never click to investigate</li>
+          <li>If you click, disconnect and call IT immediately</li>
+          <li>Never install unauthorized software or plug in unknown USB drives</li>
+          <li>Use unique passwords and enable MFA on every system</li>
+          <li>Lock your workstation every time you step away</li>
+          <li>HIPAA requires this training to be documented and retained 6 years</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Official Resources</h3>
+        <ul style="list-style:none;padding:0">
+          <li style="padding:8px 0;border-bottom:1px solid var(--border)"><a href="https://www.cisa.gov/phishing" target="_blank" style="color:var(--blue)">CISA Phishing Guidance</a></li>
+          <li style="padding:8px 0;border-bottom:1px solid var(--border)"><a href="https://www.hhs.gov/hipaa/for-professionals/security/index.html" target="_blank" style="color:var(--blue)">HHS HIPAA Security Rule</a></li>
+          <li style="padding:8px 0;border-bottom:1px solid var(--border)"><a href="https://www.ic3.gov" target="_blank" style="color:var(--blue)">FBI IC3 — Report Cybercrime</a></li>
+          <li style="padding:8px 0;border-bottom:1px solid var(--border)"><a href="https://www.ada.org/resources/practice/legal-and-regulatory" target="_blank" style="color:var(--blue)">ADA Legal &amp; Regulatory Resources</a></li>
+          <li style="padding:8px 0"><a href="https://www.ftc.gov/business-guidance/small-businesses/cybersecurity" target="_blank" style="color:var(--blue)">FTC Small Business Cybersecurity</a></li>
+        </ul>
+        <div class="callout info" style="margin-top:16px">
+          <span class="callout-icon">📋</span>
+          <p>Keep your IT/Security contact number saved in your phone. You should be able to report an incident without needing to look anything up.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="go(17)">&larr; Back</button>
+    <span class="screen-counter" id="sc-18"></span>
+    <button class="btn btn-success" onclick="go(19)">Complete Training &amp; Get Certificate &rarr;</button>
+  </div>
+</div>
+
+<!-- ── SCREEN 19 — CERTIFICATE ── -->
+<div class="screen" id="s19">
+  <div class="slide-body" style="padding-top:30px;padding-bottom:30px">
+    <div class="callout success no-print" style="margin-bottom:20px">
+      <span class="callout-icon">🎉</span>
+      <p><strong>Training Complete!</strong> Enter your name below, then print this page (Ctrl+P / Cmd+P) to save your PDF sign-off sheet and submit to your IT Team Leader.</p>
+    </div>
+    <div class="cert-wrap">
+      <svg style="position:absolute;top:0;left:0;width:80px;height:80px;opacity:.08" viewBox="0 0 80 80"><polygon points="0,0 80,0 0,80" fill="#0a2351"/></svg>
+      <svg style="position:absolute;bottom:0;right:0;width:80px;height:80px;opacity:.08" viewBox="0 0 80 80"><polygon points="80,80 0,80 80,0" fill="#0a2351"/></svg>
+      <div class="cert-logo">Dental vCISO Advisory Services</div>
+      <div style="font-size:36px;margin:8px 0">🛡️</div>
+      <div class="cert-title">Certificate of Completion</div>
+      <div class="cert-sub">This certifies that</div>
+      <input class="cert-name-input" id="cert-name" type="text" placeholder="Type your full name here" maxlength="80" autocomplete="off" oninput="updateCertName(this.value)"/>
+      <div class="cert-label">Learner Name</div>
+      <div class="cert-module">Security Awareness &amp; Phishing Defense</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Module 1 of 6 &nbsp;·&nbsp; Compliance Training Program</div>
+      <div class="callout success" style="display:inline-flex;padding:8px 20px;margin:8px 0">
+        <span class="callout-icon">✅</span>
+        <p style="font-size:13px"><strong>Quiz Score: 100% — PASSED</strong></p>
+      </div>
+      <div class="cert-date" id="cert-date-display"></div>
+      <div style="font-size:11px;color:var(--blue);font-weight:600;margin:6px 0 16px;letter-spacing:.3px">
+        Satisfies: 45 CFR 164.308(a)(5) — Security Awareness &amp; Training (Administrative Safeguards)<br>
+        Addressable specs covered: Malicious Software Protection · Login Monitoring · Password Management
+      </div>
+      <div class="cert-sig-row">
+        <div>
+          <div class="cert-sig-line" id="cert-name-display" style="font-size:15px;font-weight:600;color:var(--navy);min-height:32px"></div>
+          <div class="cert-sig-label">Learner Signature / Printed Name</div>
+        </div>
+        <div>
+          <div class="cert-sig-line"></div>
+          <div class="cert-sig-label">IT Team Leader Signature</div>
+        </div>
+        <div>
+          <div class="cert-sig-line"></div>
+          <div class="cert-sig-label">Date Reviewed</div>
+        </div>
+        <div>
+          <div class="cert-sig-line" id="cert-date-sig" style="font-size:13px;color:var(--muted)"></div>
+          <div class="cert-sig-label">Completion Date</div>
+        </div>
+      </div>
+      <div style="margin-top:20px;font-size:11px;color:var(--muted);line-height:1.7">
+        This certificate documents completion of HIPAA-required security awareness training per 45 CFR 164.308(a)(5).<br>
+        <strong>Retain for a minimum of 6 years</strong> per 45 CFR 164.316(b)(2) documentation retention requirements.
+      </div>
+    </div>
+    <div class="no-print" style="text-align:center;margin-top:20px">
+      <button class="btn btn-primary" onclick="window.print()">🖨️ &nbsp;Print / Save as PDF</button>
+    </div>
+  </div>
+  <div class="nav-row no-print">
+    <button class="btn btn-ghost" onclick="go(18)">&larr; Back to Summary</button>
+    <span class="screen-counter" id="sc-19"></span>
+    <span></span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION: QUIZ DATA — all questions defined as data, logic is separate
+══════════════════════════════════════════════ -->
+<script>
+const QUIZ_DATA = {
+  1:{question:"A front desk team member receives an email from 'deltadentalclaims@delta-dental-provider.net' asking her to log in to verify claim information. The email looks exactly like Delta Dental's normal emails. What should she do FIRST?",options:["Click the link and log in — the email looks legitimate","Check the sender domain: 'delta-dental-provider.net' is NOT deltadental.com — report it as phishing","Forward it to colleagues to warn them","Reply to the email asking if it's legitimate"],correct:1,explanation:"The sender domain 'delta-dental-provider.net' is NOT Delta Dental's official domain. This is domain spoofing. Always check the full sender address, not just the display name. Report — do not click, reply, or forward."},
+  2:{question:"You receive a voicemail from someone claiming to be 'Microsoft Support' saying your Outlook account has been compromised and you need to call them back immediately. This is an example of:",options:["A legitimate Microsoft support call — they do proactively call customers","Spear phishing via email","Vishing (voice phishing) — a social engineering attack using urgency and authority","A smishing attack"],correct:2,explanation:"Microsoft does NOT proactively call you about account problems. This is vishing — phone-based phishing using urgency ('compromised') and authority ('Microsoft Support'). Hang up and verify through Microsoft's official website."},
+  3:{question:"You accidentally clicked a link in a phishing email and a page opened asking for your Dentrix login. You realized the mistake immediately. What is the CORRECT first step?",options:["Power off the computer to stop any malware from running","Log into Dentrix from that computer to change your password immediately","Disconnect the computer from the network (unplug ethernet / turn off Wi-Fi) and call IT","Wait to see if anything unusual happens before reporting"],correct:2,explanation:"Disconnect first — this isolates the device and stops malware from communicating or spreading. Do NOT power off (destroys forensic evidence). Do NOT log into any systems from that device. Call IT immediately."},
+  4:{question:"Under HIPAA, what is the maximum annual penalty for 'Willful Neglect — Not Corrected' — which could apply if a practice had no phishing training and suffered a breach?",options:["$100 per violation","$1,000 per violation","$50,000 per violation with an annual cap of $1.9 million","There is no financial penalty — only a corrective action plan"],correct:2,explanation:"HIPAA's highest penalty tier — Willful Neglect, Not Corrected — carries fines of $50,000 per violation with an annual cap of $1.9 million. Completing this module and retaining your certificate is part of your practice's documented compliance record."},
+  5:{question:"Which of the following is the SAFEST response when you receive an unexpected email from your 'insurance company' with an attachment labeled 'Updated Fee Schedule 2025.xlsx'?",options:["Open the attachment — .xlsx files can't contain malware","Open it on your phone instead of your work computer to be safe","Call your insurance company directly using the number on their official website to verify before opening anything","Forward it to your office manager to decide"],correct:2,explanation:".xlsx files CAN contain malicious macros. Opening on your phone still risks compromise. Forwarding passes the risk to a colleague. The only safe response is to verify out-of-band — call using a number from the official website, not from the email."}
+};
+
+// ── SECTION: QUIZ ENGINE — logic fully separated from data ──
+const quizState={};
+const selectedOpts={};
+
+// Map: quiz number → screen number containing that quiz
+const QUIZ_SCREEN_MAP={1:6,2:8,3:11,4:13,5:17};
+// Map: quiz number → next-button element ID
+const QUIZ_NEXT_BTN={1:'next-q1',2:'next-q2',3:'next-q3',4:'next-q4',5:'next-q5'};
+
+function encodeText(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function buildQuiz(qNum){
+  const q=QUIZ_DATA[qNum];
+  const el=document.getElementById('quiz-'+qNum);
+  if(!el||el.innerHTML!=='')return;
+  quizState[qNum]={answered:false,passed:false,attempts:0};
+  el.innerHTML=`<div class="quiz-wrap">
+    <div class="quiz-question">${encodeText(q.question)}</div>
+    <div class="quiz-options" id="opts-${qNum}">
+      ${q.options.map((o,i)=>`<div class="quiz-opt" id="opt-${qNum}-${i}" onclick="selectOpt(${qNum},${i})">
+        <input type="radio" name="q${qNum}" id="r${qNum}-${i}"/>
+        <label for="r${qNum}-${i}">${encodeText(o)}</label>
+      </div>`).join('')}
+    </div>
+    <div class="quiz-score-bar"><div class="quiz-score-fill" id="sfill-${qNum}" style="width:0%"></div></div>
+    <div class="quiz-score-label" id="slabel-${qNum}">Select an answer above</div>
+    <div class="quiz-feedback" id="fb-${qNum}"></div>
+    <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn btn-primary" id="sub-${qNum}" onclick="submitQuiz(${qNum})" disabled>Submit Answer</button>
+      <button class="btn btn-ghost" id="retry-${qNum}" onclick="retryQuiz(${qNum})" style="display:none">Try Again</button>
+    </div>
+  </div>`;
+}
+
+function selectOpt(qNum,idx){
+  if(quizState[qNum]&&quizState[qNum].answered)return;
+  selectedOpts[qNum]=idx;
+  document.querySelectorAll(`[id^="opt-${qNum}-"]`).forEach((el,i)=>{
+    el.classList.toggle('selected',i===idx);
+    el.querySelector('input').checked=(i===idx);
+  });
+  document.getElementById(`sub-${qNum}`).disabled=false;
+}
+
+function submitQuiz(qNum){
+  const q=QUIZ_DATA[qNum];
+  const sel=selectedOpts[qNum];
+  if(sel===undefined)return;
+  quizState[qNum].attempts++;
+  quizState[qNum].answered=true;
+  const passed=sel===q.correct;
+  quizState[qNum].passed=passed;
+  document.querySelectorAll(`[id^="opt-${qNum}-"]`).forEach((el,i)=>{
+    el.classList.remove('selected');
+    if(i===q.correct)el.classList.add('correct');
+    else if(i===sel&&!passed)el.classList.add('incorrect');
+  });
+  const fb=document.getElementById(`fb-${qNum}`);
+  if(passed){
+    fb.className='quiz-feedback show pass';
+    fb.innerHTML=`<strong>✅ Correct!</strong> ${encodeText(q.explanation)}`;
+    document.getElementById(`sfill-${qNum}`).style.width='100%';
+    document.getElementById(`slabel-${qNum}`).textContent='Passed — 100%';
+    document.getElementById(`sub-${qNum}`).style.display='none';
+    document.getElementById(`retry-${qNum}`).style.display='none';
+    document.getElementById(QUIZ_NEXT_BTN[qNum]).disabled=false;
+  } else {
+    fb.className='quiz-feedback show fail';
+    fb.innerHTML=`<strong>❌ Not quite.</strong> Review the content above and try again. 100% is required to continue.`;
+    document.getElementById(`sfill-${qNum}`).style.width='0%';
+    document.getElementById(`slabel-${qNum}`).textContent=`Attempt ${quizState[qNum].attempts} — not yet passed`;
+    document.getElementById(`sub-${qNum}`).style.display='none';
+    document.getElementById(`retry-${qNum}`).style.display='inline-block';
+  }
+}
+
+function retryQuiz(qNum){
+  quizState[qNum].answered=false;
+  selectedOpts[qNum]=undefined;
+  document.querySelectorAll(`[id^="opt-${qNum}-"]`).forEach(el=>{
+    el.classList.remove('selected','correct','incorrect');
+    el.querySelector('input').checked=false;
+  });
+  const fb=document.getElementById(`fb-${qNum}`);
+  fb.className='quiz-feedback';fb.innerHTML='';
+  document.getElementById(`sub-${qNum}`).style.display='';
+  document.getElementById(`sub-${qNum}`).disabled=true;
+  document.getElementById(`retry-${qNum}`).style.display='none';
+  document.getElementById(`sfill-${qNum}`).style.width='0%';
+  document.getElementById(`slabel-${qNum}`).textContent='Select an answer above';
+}
+
+// ── SECTION: NAVIGATION — single source of truth for all counters ──
+const TOTAL=19;
+
+function go(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  window.scrollTo(0,0);
+  // Update header progress
+  document.getElementById('hdr-prog').textContent=`Screen ${n} of ${TOTAL}`;
+  document.getElementById('prog-fill').style.width=`${Math.round(n/TOTAL*100)}%`;
+  // Update the counter span inside the current screen's nav-row
+  const sc=document.getElementById('sc-'+n);
+  if(sc) sc.textContent=`Screen ${n} of ${TOTAL}`;
+  // Build quiz if this is a quiz screen
+  for(const[qNum,sNum] of Object.entries(QUIZ_SCREEN_MAP)){
+    if(sNum===n) buildQuiz(Number(qNum));
+  }
+  // Init certificate date when reaching screen 19
+  if(n===19) initCert();
+}
+
+// ── SECTION: CERTIFICATE ──
+function initCert(){
+  const d=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('cert-date-display').textContent=`Completed: ${d}`;
+  document.getElementById('cert-date-sig').textContent=d;
+}
+
+function updateCertName(val){
+  const safe=val.replace(/[^a-zA-Z\s'\-\.]/g,'');
+  document.getElementById('cert-name-display').textContent=safe;
+}
+
+// ── Initialise counters on first load ──
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('sc-1').textContent=`Screen 1 of ${TOTAL}`;
+});
+
+// ── AI ENHANCEMENT BLOCK ──
+// To add AI-powered adaptive feedback, uncomment and configure:
+// const AI_PROXY = 'https://your-backend.com/api/ai-feedback';
+// async function getAIFeedback(question, userAnswer, correctAnswer) {
+//   const res = await fetch(AI_PROXY, {
+//     method:'POST', headers:{'Content-Type':'application/json'},
+//     body: JSON.stringify({question, userAnswer, correctAnswer})
+//   });
+//   return (await res.json()).feedback;
+// }
+</script>
+</body>
+</html>
